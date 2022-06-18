@@ -25,7 +25,8 @@ ThisBuild / tlSonatypeUseLegacyHost := false
 ThisBuild / tlCiReleaseBranches += "publish/native"
 ThisBuild / tlMimaPreviousVersions := Set.empty
 ThisBuild / resolvers += "s01" at "https://s01.oss.sonatype.org/content/repositories/snapshots/"
-ThisBuild/ tlCiScalafmtCheck := false
+ThisBuild / tlCiScalafmtCheck := false
+ThisBuild / tlCiHeaderCheck := false
 
 lazy val root = tlCrossRootProject.aggregate(core)
 
