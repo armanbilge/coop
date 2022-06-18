@@ -14,35 +14,26 @@
  * limitations under the License.
  */
 
-ThisBuild / baseVersion := "1.1"
+ThisBuild / tlBaseVersion := "1.2"
 
-ThisBuild / organization := "org.typelevel"
-ThisBuild / organizationName := "Typelevel"
+ThisBuild / developers := List(tlGitHubDev("djspiewak", "Daniel Spiewak"))
 
-ThisBuild / publishGithubUser := "djspiewak"
-ThisBuild / publishFullName := "Daniel Spiewak"
+ThisBuild / crossScalaVersions := Seq("3.1.2", "2.12.15", "2.13.8")
 
-ThisBuild / strictSemVer := false
+ThisBuild / organization := "com.armanbilge"
+ThisBuild / tlSonatypeUseLegacyHost := false
+ThisBuild / tlCiReleaseBranches += "publish/native"
+ThisBuild / tlMimaPreviousVersions := Set.empty
+ThisBuild / resolvers += "s01" at "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+ThisBuild/ tlCiScalafmtCheck := false
 
-ThisBuild / crossScalaVersions := Seq("3.0.2", "2.12.15", "2.13.8")
+lazy val root = tlCrossRootProject.aggregate(core)
 
-ThisBuild / githubWorkflowJavaVersions := Seq("adopt@1.8", "adopt@1.11", "adopt@1.14", "graalvm-ce-java8@20.2.0")
-
-ThisBuild / homepage := Some(url("https://github.com/typelevel/coop"))
-
-ThisBuild / scmInfo := Some(
-  ScmInfo(
-    url("https://github.com/typelevel/coop"),
-    "git@github.com:typelevel/coop.git"))
-
-lazy val root = project.in(file(".")).aggregate(core.jvm, core.js)
-  .enablePlugins(NoPublishPlugin)
-
-lazy val core = crossProject(JSPlatform, JVMPlatform).in(file("core"))
+lazy val core = crossProject(JSPlatform, JVMPlatform, NativePlatform).in(file("core"))
   .settings(
     name := "coop",
-    libraryDependencies += ("org.specs2" %%% "specs2-core" % "4.14.1" % Test).cross(CrossVersion.for3Use2_13))
+    libraryDependencies += "org.specs2" %%% "specs2-core" % "4.16.0" % Test)
   .settings(
     libraryDependencies ++= Seq(
-      "org.typelevel" %%% "cats-free" % "2.7.0",
-      "org.typelevel" %%% "cats-mtl"  % "1.2.1"))
+      "org.typelevel" %%% "cats-free" % "2.8.0",
+      "com.armanbilge" %%% "cats-mtl"  % "1.3-a6f62d6-SNAPSHOT"))
